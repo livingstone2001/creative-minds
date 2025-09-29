@@ -4,8 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CREATIVE MINDS - Unlock Your Potential</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* Global Styles */
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #f1c40f;
+            --light: #f5f7fa;
+            --dark: #2c3e50;
+            --text: #333;
+            --text-light: #7f8c8d;
+            --success: #2ecc71;
+            --error: #e74c3c;
+            --shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+        
         * {
             margin: 0;
             padding: 0;
@@ -14,9 +29,10 @@
         }
         
         body {
-            background-color: #f5f7fa;
-            color: #333;
+            background-color: var(--light);
+            color: var(--text);
             line-height: 1.6;
+            overflow-x: hidden;
         }
         
         .container {
@@ -28,10 +44,19 @@
         
         /* Header Styles */
         header {
-            background: linear-gradient(135deg, #2c3e50, #3498db);
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
             padding: 1rem 0;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: var(--transition);
+        }
+        
+        .header-scrolled {
+            padding: 0.5rem 0;
+            background: rgba(44, 62, 80, 0.95);
         }
         
         .header-content {
@@ -43,6 +68,8 @@
         .logo {
             display: flex;
             align-items: center;
+            text-decoration: none;
+            color: white;
         }
         
         .logo h1 {
@@ -52,6 +79,7 @@
         
         .logo-icon {
             font-size: 2rem;
+            color: var(--accent);
         }
         
         nav ul {
@@ -67,11 +95,25 @@
             color: white;
             text-decoration: none;
             font-weight: 500;
-            transition: color 0.3s;
+            transition: var(--transition);
+            position: relative;
+            padding: 5px 0;
         }
         
-        nav ul li a:hover {
-            color: #f1c40f;
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--accent);
+            transition: var(--transition);
+        }
+        
+        nav ul li a:hover::after,
+        nav ul li a.active::after {
+            width: 100%;
         }
         
         .auth-buttons {
@@ -85,7 +127,7 @@
             border-radius: 4px;
             cursor: pointer;
             font-weight: 500;
-            transition: all 0.3s;
+            transition: var(--transition);
         }
         
         .btn-login {
@@ -99,12 +141,86 @@
         }
         
         .btn-signup {
-            background-color: #f1c40f;
-            color: #2c3e50;
+            background-color: var(--accent);
+            color: var(--primary);
         }
         
         .btn-signup:hover {
             background-color: #f39c12;
+        }
+        
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .mobile-nav {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 280px;
+            height: 100vh;
+            background: var(--primary);
+            z-index: 1001;
+            transition: var(--transition);
+            padding: 2rem;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .mobile-nav.active {
+            right: 0;
+        }
+        
+        .mobile-nav ul {
+            list-style: none;
+            margin-top: 2rem;
+        }
+        
+        .mobile-nav ul li {
+            margin-bottom: 1.5rem;
+        }
+        
+        .mobile-nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            display: block;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .close-mobile-menu {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+        
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
         }
         
         /* Hero Section */
@@ -112,37 +228,114 @@
             background: linear-gradient(rgba(44, 62, 80, 0.8), rgba(52, 152, 219, 0.8)), url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
             background-size: cover;
             background-position: center;
+            background-attachment: fixed;
             color: white;
-            padding: 5rem 0;
+            padding: 8rem 0 5rem;
             text-align: center;
+            position: relative;
         }
         
         .hero h2 {
             font-size: 2.5rem;
             margin-bottom: 1rem;
+            animation: fadeIn 1s ease-out;
         }
         
         .hero p {
             font-size: 1.2rem;
             max-width: 700px;
             margin: 0 auto 2rem;
+            animation: fadeIn 1.5s ease-out;
         }
         
         .btn-primary {
-            background-color: #f1c40f;
-            color: #2c3e50;
+            background-color: var(--accent);
+            color: var(--primary);
             padding: 12px 24px;
             font-size: 1.1rem;
             border-radius: 30px;
             text-decoration: none;
             display: inline-block;
-            transition: all 0.3s;
+            transition: var(--transition);
+            animation: fadeIn 2s ease-out;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
         }
         
         .btn-primary:hover {
             background-color: #f39c12;
             transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* NEW FEATURE: Interactive Stats Counter */
+        .stats {
+            background: var(--primary);
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+        }
+        
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+        
+        .stat-item {
+            padding: 1.5rem;
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: var(--accent);
+        }
+        
+        .stat-label {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        /* NEW FEATURE: Interactive Progress Tracker */
+        .progress-tracker {
+            background: white;
+            padding: 3rem 0;
+            text-align: center;
+        }
+        
+        .progress-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background: #e0e6ed;
+            border-radius: 5px;
+            margin: 2rem 0;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(to right, var(--secondary), var(--accent));
+            width: 0%;
+            transition: width 1.5s ease-in-out;
+        }
+        
+        .progress-text {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .progress-actions {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
         }
         
         /* Features Section */
@@ -158,14 +351,27 @@
         
         .section-title h2 {
             font-size: 2.2rem;
-            color: #2c3e50;
+            color: var(--primary);
             margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 3px;
+            background-color: var(--secondary);
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
         }
         
         .section-title p {
-            color: #7f8c8d;
+            color: var(--text-light);
             max-width: 700px;
-            margin: 0 auto;
+            margin: 1.5rem auto 0;
         }
         
         .features-grid {
@@ -179,8 +385,27 @@
             border-radius: 8px;
             padding: 2rem;
             text-align: center;
-            transition: transform 0.3s, box-shadow 0.3s;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, var(--secondary), var(--accent));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: var(--transition);
+        }
+        
+        .feature-card:hover::before {
+            transform: scaleX(1);
         }
         
         .feature-card:hover {
@@ -190,26 +415,110 @@
         
         .feature-icon {
             font-size: 3rem;
-            color: #3498db;
+            color: var(--secondary);
             margin-bottom: 1.5rem;
+            transition: var(--transition);
+        }
+        
+        .feature-card:hover .feature-icon {
+            transform: scale(1.1);
+            color: var(--accent);
         }
         
         .feature-card h3 {
             font-size: 1.5rem;
             margin-bottom: 1rem;
-            color: #2c3e50;
+            color: var(--primary);
+        }
+        
+        /* NEW FEATURE: Interactive Learning Path */
+        .learning-path {
+            background: var(--light);
+            padding: 5rem 0;
+        }
+        
+        .path-container {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .path-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 30px;
+            height: 100%;
+            width: 4px;
+            background: var(--secondary);
+            z-index: 1;
+        }
+        
+        .path-item {
+            display: flex;
+            margin-bottom: 3rem;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .path-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--secondary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            margin-right: 2rem;
+            flex-shrink: 0;
+            z-index: 3;
+        }
+        
+        .path-content {
+            flex: 1;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+        
+        .path-content h3 {
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+        
+        .path-status {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #e0e6ed;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
+        }
+        
+        .path-status.completed {
+            background: var(--success);
+            color: white;
+        }
+        
+        .path-status.current {
+            background: var(--accent);
+            color: var(--primary);
         }
         
         /* Resources Section */
         .resources {
             padding: 5rem 0;
-            background-color: #f5f7fa;
+            background-color: var(--light);
         }
         
         .resources-tabs {
             display: flex;
             justify-content: center;
             margin-bottom: 2rem;
+            flex-wrap: wrap;
         }
         
         .tab-btn {
@@ -219,11 +528,14 @@
             cursor: pointer;
             font-size: 1rem;
             font-weight: 500;
-            transition: all 0.3s;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         
         .tab-btn.active {
-            background-color: #3498db;
+            background-color: var(--secondary);
             color: white;
         }
         
@@ -237,6 +549,7 @@
         
         .tab-content {
             display: none;
+            animation: fadeIn 0.5s ease-out;
         }
         
         .tab-content.active {
@@ -245,7 +558,7 @@
         
         .resources-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 1.5rem;
         }
         
@@ -253,22 +566,36 @@
             background-color: white;
             border-radius: 8px;
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
         }
         
         .resource-card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
         }
         
         .resource-img {
             height: 160px;
-            background-color: #3498db;
+            background: linear-gradient(45deg, var(--secondary), var(--accent));
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
             font-size: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .resource-img::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.1);
         }
         
         .resource-content {
@@ -277,25 +604,117 @@
         
         .resource-content h3 {
             margin-bottom: 0.5rem;
-            color: #2c3e50;
+            color: var(--primary);
         }
         
         .resource-content p {
-            color: #7f8c8d;
+            color: var(--text-light);
             margin-bottom: 1rem;
             font-size: 0.9rem;
         }
         
         .resource-link {
-            color: #3498db;
+            color: var(--secondary);
             text-decoration: none;
             font-weight: 500;
             display: inline-flex;
             align-items: center;
+            transition: var(--transition);
+        }
+        
+        .resource-link:hover {
+            color: var(--primary);
         }
         
         .resource-link i {
             margin-left: 5px;
+            transition: var(--transition);
+        }
+        
+        .resource-link:hover i {
+            transform: translateX(5px);
+        }
+        
+        /* NEW FEATURE: Interactive Quiz */
+        .quiz-section {
+            background: white;
+            padding: 5rem 0;
+        }
+        
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+        }
+        
+        .quiz-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .quiz-progress {
+            height: 8px;
+            background: #e0e6ed;
+            border-radius: 4px;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+        
+        .quiz-progress-bar {
+            height: 100%;
+            background: var(--secondary);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .quiz-question {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .quiz-options {
+            display: grid;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .quiz-option {
+            background: white;
+            border: 2px solid #e0e6ed;
+            border-radius: 8px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .quiz-option:hover {
+            border-color: var(--secondary);
+        }
+        
+        .quiz-option.selected {
+            border-color: var(--secondary);
+            background: rgba(52, 152, 219, 0.1);
+        }
+        
+        .quiz-actions {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .quiz-results {
+            text-align: center;
+            display: none;
+        }
+        
+        .quiz-score {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--secondary);
+            margin: 1rem 0;
         }
         
         /* About Section */
@@ -315,12 +734,35 @@
             border-radius: 8px;
             overflow: hidden;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        
+        .about-img::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(52, 152, 219, 0.7), rgba(241, 196, 15, 0.7));
+            opacity: 0;
+            transition: var(--transition);
+            z-index: 1;
+        }
+        
+        .about-img:hover::before {
+            opacity: 1;
         }
         
         .about-img img {
             width: 100%;
             height: auto;
             display: block;
+            transition: var(--transition);
+        }
+        
+        .about-img:hover img {
+            transform: scale(1.05);
         }
         
         .about-text {
@@ -329,8 +771,19 @@
         
         .about-text h2 {
             font-size: 2.2rem;
-            color: #2c3e50;
+            color: var(--primary);
             margin-bottom: 1.5rem;
+            position: relative;
+        }
+        
+        .about-text h2::after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 3px;
+            background-color: var(--secondary);
+            bottom: -10px;
+            left: 0;
         }
         
         .about-text p {
@@ -338,9 +791,248 @@
             color: #555;
         }
         
+        /* NEW FEATURE: Interactive Community Forum Preview */
+        .community-preview {
+            background: var(--primary);
+            color: white;
+            padding: 5rem 0;
+        }
+        
+        .community-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .forum-topics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .forum-topic {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: var(--transition);
+        }
+        
+        .forum-topic:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-5px);
+        }
+        
+        .topic-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .topic-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .topic-stats {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        .topic-excerpt {
+            margin-bottom: 1rem;
+            opacity: 0.9;
+        }
+        
+        .topic-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+        
+        /* Testimonials Section */
+        .testimonials {
+            padding: 5rem 0;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            text-align: center;
+        }
+        
+        .testimonials-slider {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .testimonial-slide {
+            display: none;
+            animation: fadeIn 1s ease-out;
+        }
+        
+        .testimonial-slide.active {
+            display: block;
+        }
+        
+        .testimonial-content {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        
+        .testimonial-content::before {
+            content: '"';
+            font-size: 4rem;
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            opacity: 0.3;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+        
+        .author-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .author-info h4 {
+            margin-bottom: 5px;
+        }
+        
+        .author-info p {
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+        
+        .testimonial-nav {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 2rem;
+        }
+        
+        .testimonial-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .testimonial-dot.active {
+            background: white;
+            transform: scale(1.2);
+        }
+        
+        /* NEW FEATURE: Interactive Idea Generator */
+        .idea-generator {
+            background: var(--light);
+            padding: 5rem 0;
+            text-align: center;
+        }
+        
+        .generator-container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+        }
+        
+        .generator-output {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 2rem 0;
+            min-height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            position: relative;
+        }
+        
+        .idea-text {
+            transition: var(--transition);
+        }
+        
+        .generator-actions {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        /* Newsletter Section */
+        .newsletter {
+            padding: 4rem 0;
+            background-color: var(--light);
+            text-align: center;
+        }
+        
+        .newsletter-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .newsletter-form {
+            display: flex;
+            margin-top: 1.5rem;
+            max-width: 500px;
+            margin: 1.5rem auto 0;
+        }
+        
+        .newsletter-input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px 0 0 4px;
+            font-size: 1rem;
+            outline: none;
+        }
+        
+        .newsletter-input:focus {
+            border-color: var(--secondary);
+        }
+        
+        .newsletter-btn {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 0 20px;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .newsletter-btn:hover {
+            background: #2980b9;
+        }
+        
         /* Footer */
         footer {
-            background-color: #2c3e50;
+            background-color: var(--primary);
             color: white;
             padding: 3rem 0 1rem;
         }
@@ -366,7 +1058,7 @@
             bottom: 0;
             width: 40px;
             height: 2px;
-            background-color: #3498db;
+            background-color: var(--secondary);
         }
         
         .footer-column ul {
@@ -380,11 +1072,39 @@
         .footer-column ul li a {
             color: #bdc3c7;
             text-decoration: none;
-            transition: color 0.3s;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         
         .footer-column ul li a:hover {
-            color: #3498db;
+            color: var(--secondary);
+            transform: translateX(5px);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 1rem;
+        }
+        
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background-color: #34495e;
+            border-radius: 50%;
+            color: white;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .social-links a:hover {
+            background-color: var(--secondary);
+            transform: translateY(-3px);
         }
         
         .copyright {
@@ -407,6 +1127,8 @@
             z-index: 1000;
             justify-content: center;
             align-items: center;
+            animation: fadeIn 0.3s;
+            padding: 1rem;
         }
         
         .modal-content {
@@ -416,6 +1138,8 @@
             max-width: 400px;
             padding: 2rem;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            animation: slideUp 0.3s;
+            position: relative;
         }
         
         .modal-header {
@@ -426,7 +1150,7 @@
         }
         
         .modal-header h2 {
-            color: #2c3e50;
+            color: var(--primary);
         }
         
         .close-modal {
@@ -434,26 +1158,39 @@
             border: none;
             font-size: 1.5rem;
             cursor: pointer;
-            color: #7f8c8d;
+            color: var(--text-light);
+            transition: var(--transition);
+        }
+        
+        .close-modal:hover {
+            color: var(--error);
         }
         
         .form-group {
             margin-bottom: 1.5rem;
+            position: relative;
         }
         
         .form-group label {
             display: block;
             margin-bottom: 0.5rem;
-            color: #2c3e50;
+            color: var(--primary);
             font-weight: 500;
         }
         
         .form-group input {
             width: 100%;
-            padding: 10px;
+            padding: 12px 15px;
             border: 1px solid #ddd;
             border-radius: 4px;
             font-size: 1rem;
+            transition: var(--transition);
+        }
+        
+        .form-group input:focus {
+            border-color: var(--secondary);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
         }
         
         .form-options {
@@ -473,12 +1210,17 @@
         }
         
         .forgot-password {
-            color: #3498db;
+            color: var(--secondary);
             text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .forgot-password:hover {
+            color: #2980b9;
         }
         
         .btn-login-modal {
-            background-color: #3498db;
+            background-color: var(--secondary);
             color: white;
             width: 100%;
             padding: 12px;
@@ -486,7 +1228,8 @@
             border-radius: 4px;
             font-size: 1rem;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: var(--transition);
+            font-weight: 600;
         }
         
         .btn-login-modal:hover {
@@ -496,13 +1239,18 @@
         .signup-link {
             text-align: center;
             margin-top: 1.5rem;
-            color: #7f8c8d;
+            color: var(--text-light);
         }
         
         .signup-link a {
-            color: #3498db;
+            color: var(--secondary);
             text-decoration: none;
             font-weight: 500;
+            transition: var(--transition);
+        }
+        
+        .signup-link a:hover {
+            color: #2980b9;
         }
         
         /* User Profile */
@@ -516,7 +1264,7 @@
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            background-color: #3498db;
+            background-color: var(--secondary);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -536,42 +1284,204 @@
             border-radius: 4px;
             cursor: pointer;
             margin-left: 10px;
+            transition: var(--transition);
+        }
+        
+        .btn-logout:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Form Validation */
+        .form-group.error input {
+            border-color: var(--error);
+        }
+        
+        .error-message {
+            color: var(--error);
+            font-size: 0.8rem;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .form-group.error .error-message {
+            display: block;
+        }
+        
+        .success-message {
+            background-color: var(--success);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Scroll to top button */
+        .scroll-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            z-index: 99;
+        }
+        
+        .scroll-to-top:hover {
+            background-color: #2980b9;
+            transform: translateY(-3px);
+        }
+        
+        /* Loading Spinner */
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
         
         /* Responsive Design */
-        @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            nav ul {
-                margin: 1rem 0;
-                justify-content: center;
-            }
-            
+        @media (max-width: 992px) {
             .about-content {
                 flex-direction: column;
             }
             
+            .about-img {
+                margin-bottom: 2rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: row;
+                text-align: center;
+            }
+            
+            nav {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .auth-buttons {
+                display: none;
+            }
+            
             .hero h2 {
                 font-size: 2rem;
+            }
+            
+            .resources-tabs {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .tab-btn {
+                border-radius: 30px !important;
+                margin: 5px 0;
+                width: 200px;
+                justify-content: center;
+            }
+            
+            .newsletter-form {
+                flex-direction: column;
+            }
+            
+            .newsletter-input {
+                border-radius: 4px;
+                margin-bottom: 10px;
+            }
+            
+            .newsletter-btn {
+                border-radius: 4px;
+                padding: 12px;
+            }
+            
+            .path-container::before {
+                left: 30px;
+            }
+            
+            .path-icon {
+                margin-right: 1rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero {
+                padding: 6rem 0 3rem;
+            }
+            
+            .features, .resources, .about, .testimonials {
+                padding: 3rem 0;
+            }
+            
+            .feature-card, .resource-card {
+                padding: 1.5rem;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .quiz-actions {
+                flex-direction: column;
+            }
+            
+            .generator-actions {
+                flex-direction: column;
             }
         }
     </style>
 </head>
 <body>
     <!-- Header -->
-    <header>
+    <header id="header">
         <div class="container">
             <div class="header-content">
-                <div class="logo">
-                    <div class="logo-icon">💡</div>
+                <a href="#home" class="logo">
+                    <div class="logo-icon"><i class="fas fa-lightbulb"></i></div>
                     <h1>CREATIVE MINDS</h1>
-                </div>
+                </a>
                 <nav>
                     <ul>
-                        <li><a href="#home">Home</a></li>
+                        <li><a href="#home" class="active">Home</a></li>
                         <li><a href="#features">Features</a></li>
                         <li><a href="#resources">Resources</a></li>
                         <li><a href="#about">About</a></li>
@@ -582,13 +1492,32 @@
                     <button class="btn btn-signup" id="signupBtn">Sign Up</button>
                 </div>
                 <div class="user-profile" id="userProfile">
-                    <div class="user-avatar">LM</div>
-                    <div class="user-name">Livingstone Mzembe</div>
+                    <div class="user-avatar" id="userAvatar">U</div>
+                    <div class="user-name" id="userName">User</div>
                     <button class="btn-logout" id="logoutBtn">Logout</button>
                 </div>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
             </div>
         </div>
     </header>
+
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav" id="mobileNav">
+        <button class="close-mobile-menu" id="closeMobileMenu">
+            <i class="fas fa-times"></i>
+        </button>
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#resources">Resources</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#" id="mobileLoginBtn">Login</a></li>
+            <li><a href="#" id="mobileSignupBtn">Sign Up</a></li>
+        </ul>
+    </div>
+    <div class="overlay" id="overlay"></div>
 
     <!-- Hero Section -->
     <section class="hero" id="home">
@@ -596,6 +1525,51 @@
             <h2>Unlock Your Creative Potential</h2>
             <p>CREATIVE MINDS is your platform for innovative ideas, educational resources, and problem-solving inspiration. Join our community to expand your knowledge and creativity.</p>
             <a href="#resources" class="btn-primary">Explore Resources</a>
+        </div>
+    </section>
+
+    <!-- NEW FEATURE: Interactive Stats Counter -->
+    <section class="stats">
+        <div class="container">
+            <div class="stats-container">
+                <div class="stat-item">
+                    <div class="stat-number" data-target="12540">0</div>
+                    <div class="stat-label">Active Members</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-target="856">0</div>
+                    <div class="stat-label">Resources Available</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-target="342">0</div>
+                    <div class="stat-label">Projects Completed</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-target="98">0</div>
+                    <div class="stat-label">Success Rate</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW FEATURE: Interactive Progress Tracker -->
+    <section class="progress-tracker">
+        <div class="container">
+            <div class="section-title">
+                <h2>Your Learning Journey</h2>
+                <p>Track your progress and unlock achievements as you learn</p>
+            </div>
+            <div class="progress-container">
+                <div class="progress-text" id="progressText">Complete your profile to get started (0%)</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-actions">
+                    <button class="btn-primary" id="addProfileBtn">Complete Profile</button>
+                    <button class="btn-primary" id="addResourceBtn">Add First Resource</button>
+                    <button class="btn-primary" id="joinCommunityBtn">Join Community</button>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -608,24 +1582,76 @@
             </div>
             <div class="features-grid">
                 <div class="feature-card">
-                    <div class="feature-icon">💡</div>
+                    <div class="feature-icon"><i class="fas fa-lightbulb"></i></div>
                     <h3>Problem Solving</h3>
                     <p>Get innovative ideas and solutions for the challenges you're facing in your personal or professional life.</p>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-icon">📚</div>
+                    <div class="feature-icon"><i class="fas fa-book"></i></div>
                     <h3>Educational Resources</h3>
                     <p>Access a vast library of books, articles, and tutorials to expand your knowledge in various fields.</p>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-icon">🎬</div>
+                    <div class="feature-icon"><i class="fas fa-video"></i></div>
                     <h3>Video Content</h3>
                     <p>Watch educational videos, tutorials, and inspirational talks from experts around the world.</p>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-icon">👥</div>
+                    <div class="feature-icon"><i class="fas fa-users"></i></div>
                     <h3>Community</h3>
                     <p>Connect with like-minded individuals, share ideas, and collaborate on creative projects.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW FEATURE: Interactive Learning Path -->
+    <section class="learning-path">
+        <div class="container">
+            <div class="section-title">
+                <h2>Your Creative Learning Path</h2>
+                <p>Follow this guided path to develop your creative skills step by step</p>
+            </div>
+            <div class="path-container">
+                <div class="path-item">
+                    <div class="path-icon"><i class="fas fa-search"></i></div>
+                    <div class="path-content">
+                        <h3>Discover Your Interests</h3>
+                        <span class="path-status completed">Completed</span>
+                        <p>Explore different creative fields and identify what truly inspires you.</p>
+                    </div>
+                </div>
+                <div class="path-item">
+                    <div class="path-icon"><i class="fas fa-book-open"></i></div>
+                    <div class="path-content">
+                        <h3>Learn Fundamentals</h3>
+                        <span class="path-status completed">Completed</span>
+                        <p>Build a strong foundation with essential creative principles and techniques.</p>
+                    </div>
+                </div>
+                <div class="path-item">
+                    <div class="path-icon"><i class="fas fa-pencil-alt"></i></div>
+                    <div class="path-content">
+                        <h3>Practice & Apply</h3>
+                        <span class="path-status current">Current Step</span>
+                        <p>Put your knowledge into practice with hands-on projects and exercises.</p>
+                    </div>
+                </div>
+                <div class="path-item">
+                    <div class="path-icon"><i class="fas fa-users"></i></div>
+                    <div class="path-content">
+                        <h3>Join Community</h3>
+                        <span class="path-status">Upcoming</span>
+                        <p>Connect with other creative minds for feedback and collaboration.</p>
+                    </div>
+                </div>
+                <div class="path-item">
+                    <div class="path-icon"><i class="fas fa-rocket"></i></div>
+                    <div class="path-content">
+                        <h3>Launch Projects</h3>
+                        <span class="path-status">Upcoming</span>
+                        <p>Bring your creative ideas to life and share them with the world.</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -639,42 +1665,42 @@
                 <p>Browse through our curated collection of educational materials</p>
             </div>
             <div class="resources-tabs">
-                <button class="tab-btn active" data-tab="videos">Videos</button>
-                <button class="tab-btn" data-tab="books">Books</button>
-                <button class="tab-btn" data-tab="articles">Articles</button>
+                <button class="tab-btn active" data-tab="videos"><i class="fas fa-video"></i> Videos</button>
+                <button class="tab-btn" data-tab="books"><i class="fas fa-book"></i> Books</button>
+                <button class="tab-btn" data-tab="articles"><i class="fas fa-newspaper"></i> Articles</button>
             </div>
             <div class="tab-content active" id="videos-tab">
                 <div class="resources-grid">
                     <div class="resource-card">
-                        <div class="resource-img">🎬</div>
+                        <div class="resource-img"><i class="fas fa-play-circle"></i></div>
                         <div class="resource-content">
                             <h3>Creative Problem Solving</h3>
                             <p>Learn techniques to approach problems from new perspectives and generate innovative solutions.</p>
-                            <a href="#" class="resource-link">Watch Now <i>→</i></a>
+                            <a href="#" class="resource-link">Watch Now <i class="fas fa-arrow-right"></i></a>
                         </div>
                     </div>
                     <div class="resource-card">
-                        <div class="resource-img">🎬</div>
+                        <div class="resource-img"><i class="fas fa-play-circle"></i></div>
                         <div class="resource-content">
                             <h3>Design Thinking Fundamentals</h3>
                             <p>Understand the principles of design thinking and how to apply them to real-world challenges.</p>
-                            <a href="#" class="resource-link">Watch Now <i>→</i></a>
+                            <a href="#" class="resource-link">Watch Now <i class="fas fa-arrow-right"></i></a>
                         </div>
                     </div>
                     <div class="resource-card">
-                        <div class="resource-img">🎬</div>
+                        <div class="resource-img"><i class="fas fa-play-circle"></i></div>
                         <div class="resource-content">
                             <h3>Innovation in Business</h3>
                             <p>Explore how businesses can foster innovation and stay ahead in competitive markets.</p>
-                            <a href="#" class="resource-link">Watch Now <i>→</i></a>
+                            <a href="#" class="resource-link">Watch Now <i class="fas fa-arrow-right"></i></a>
                         </div>
                     </div>
                     <div class="resource-card">
-                        <div class="resource-img">🎬</div>
+                        <div class="resource-img"><i class="fas fa-play-circle"></i></div>
                         <div class="resource-content">
                             <h3>Mindfulness for Creativity</h3>
                             <p>Discover how mindfulness practices can enhance your creative thinking and problem-solving abilities.</p>
-                            <a href="#" class="resource-link">Watch Now <i>→</i></a>
+                            <a href="#" class="resource-link">Watch Now <i class="fas fa-arrow-right"></i></a>
                         </div>
                     </div>
                 </div>
@@ -682,35 +1708,35 @@
             <div class="tab-content" id="books-tab">
                 <div class="resources-grid">
                     <div class="resource-card">
-                        <div class="resource-img">📚</div>
+                        <div class="resource-img"><i class="fas fa-book-open"></i></div>
                         <div class="resource-content">
                             <h3>Creative Confidence</h3>
                             <p>By Tom and David Kelley - Unlock your creative potential and overcome the fears that hold you back.</p>
-                            <a href="#" class="resource-link">Read Now <i>→</i></a>
+                            <a href="#" class="resource-link">Read Now <i class="fas fa-arrow-right"></i></a>
                         </div>
                     </div>
                     <div class="resource-card">
-                        <div class="resource-img">📚</div>
+                        <div class="resource-img"><i class="fas fa-book-open"></i></div>
                         <div class="resource-content">
                             <h3>Thinking, Fast and Slow</h3>
                             <p>By Daniel Kahneman - Explore the two systems that drive the way we think and make decisions.</p>
-                            <a href="#" class="resource-link">Read Now <i>→</i></a>
+                            <a href="#" class="resource-link">Read Now <i class="fas fa-arrow-right"></i></a>
                         </div>
                     </div>
                     <div class="resource-card">
-                        <div class="resource-img">📚</div>
+                        <div class="resource-img"><i class="fas fa-book-open"></i></div>
                         <div class="resource-content">
                             <h3>The Innovator's Dilemma</h3>
                             <p>By Clayton Christensen - Understand why great companies can fail and how to avoid it.</p>
-                            <a href="#" class="resource-link">Read Now <i>→</i></a>
+                            <a href="#" class="resource-link">Read Now <i class="fas fa-arrow-right"></i></a>
                         </div>
                     </div>
                     <div class="resource-card">
-                        <div class="resource-img">📚</div>
+                        <div class="resource-img"><i class="fas fa-book-open"></i></div>
                         <div class="resource-content">
                             <h3>Steal Like an Artist</h3>
                             <p>By Austin Kleon - Discover how to embrace influence and build upon the work of others creatively.</p>
-                            <a href="#" class="resource-link">Read Now <i>→</i></a>
+                            <a href="#" class="resource-link">Read Now <i class="fas fa-arrow-right"></i></a>
                         </div>
                     </div>
                 </div>
@@ -718,37 +1744,74 @@
             <div class="tab-content" id="articles-tab">
                 <div class="resources-grid">
                     <div class="resource-card">
-                        <div class="resource-img">📄</div>
+                        <div class="resource-img"><i class="fas fa-file-alt"></i></div>
                         <div class="resource-content">
                             <h3>The Psychology of Creativity</h3>
                             <p>Explore the cognitive processes behind creative thinking and how to enhance your creative abilities.</p>
-                            <a href="#" class="resource-link">Read Now <i>→</i></a>
+                            <a href="#" class="resource-link">Read Now <i class="fas fa-arrow-right"></i></a>
                         </div>
                     </div>
                     <div class="resource-card">
-                        <div class="resource-img">📄</div>
+                        <div class="resource-img"><i class="fas fa-file-alt"></i></div>
                         <div class="resource-content">
                             <h3>10 Techniques for Better Problem Solving</h3>
                             <p>Practical methods to approach complex problems and generate effective solutions.</p>
-                            <a href="#" class="resource-link">Read Now <i>→</i></a>
+                            <a href="#" class="resource-link">Read Now <i class="fas fa-arrow-right"></i></a>
                         </div>
                     </div>
                     <div class="resource-card">
-                        <div class="resource-img">📄</div>
+                        <div class="resource-img"><i class="fas fa-file-alt"></i></div>
                         <div class="resource-content">
                             <h3>How to Foster Innovation in Teams</h3>
                             <p>Strategies for creating an environment where creativity and innovation can thrive in group settings.</p>
-                            <a href="#" class="resource-link">Read Now <i>→</i></a>
+                            <a href="#" class="resource-link">Read Now <i class="fas fa-arrow-right"></i></a>
                         </div>
                     </div>
                     <div class="resource-card">
-                        <div class="resource-img">📄</div>
+                        <div class="resource-img"><i class="fas fa-file-alt"></i></div>
                         <div class="resource-content">
                             <h3>The Future of Education</h3>
                             <p>How technology and new pedagogical approaches are transforming learning experiences.</p>
-                            <a href="#" class="resource-link">Read Now <i>→</i></a>
+                            <a href="#" class="resource-link">Read Now <i class="fas fa-arrow-right"></i></a>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW FEATURE: Interactive Quiz -->
+    <section class="quiz-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Test Your Creative Knowledge</h2>
+                <p>Take this quick quiz to assess your understanding of creative thinking concepts</p>
+            </div>
+            <div class="quiz-container">
+                <div class="quiz-header">
+                    <h3>Creative Thinking Quiz</h3>
+                    <div class="quiz-progress">
+                        <div class="quiz-progress-bar" id="quizProgress"></div>
+                    </div>
+                </div>
+                <div class="quiz-content" id="quizContent">
+                    <div class="quiz-question" id="quizQuestion">What is the first step in the design thinking process?</div>
+                    <div class="quiz-options" id="quizOptions">
+                        <div class="quiz-option" data-correct="false">Prototype</div>
+                        <div class="quiz-option" data-correct="true">Empathize</div>
+                        <div class="quiz-option" data-correct="false">Ideate</div>
+                        <div class="quiz-option" data-correct="false">Test</div>
+                    </div>
+                    <div class="quiz-actions">
+                        <button class="btn" id="prevQuestion">Previous</button>
+                        <button class="btn-primary" id="nextQuestion">Next Question</button>
+                    </div>
+                </div>
+                <div class="quiz-results" id="quizResults">
+                    <h3>Quiz Complete!</h3>
+                    <div class="quiz-score" id="quizScore">0/5</div>
+                    <p id="quizFeedback">Keep learning to improve your creative thinking skills!</p>
+                    <button class="btn-primary" id="retakeQuiz">Retake Quiz</button>
                 </div>
             </div>
         </div>
@@ -760,7 +1823,8 @@
             <div class="about-content">
                 <div class="about-img">
                     <!-- Placeholder for image -->
-                    <div style="background-color: #3498db; height: 400px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem;">
+                    <div style="background: linear-gradient(45deg, #3498db, #f1c40f); height: 400px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; font-size: 1.5rem; padding: 2rem; text-align: center;">
+                        <i class="fas fa-user-tie" style="font-size: 4rem; margin-bottom: 1rem;"></i>
                         Livingstone Mzembe - Founder
                     </div>
                 </div>
@@ -775,6 +1839,154 @@
         </div>
     </section>
 
+    <!-- NEW FEATURE: Interactive Community Forum Preview -->
+    <section class="community-preview">
+        <div class="container">
+            <div class="section-title">
+                <h2>Community Forum</h2>
+                <p>Join the conversation with other creative minds</p>
+            </div>
+            <div class="community-container">
+                <div class="forum-topics">
+                    <div class="forum-topic">
+                        <div class="topic-header">
+                            <div class="topic-title">Brainstorming Techniques</div>
+                            <div class="topic-stats">
+                                <span><i class="fas fa-comment"></i> 24</span>
+                                <span><i class="fas fa-eye"></i> 156</span>
+                            </div>
+                        </div>
+                        <div class="topic-excerpt">Share your most effective brainstorming methods and learn from others...</div>
+                        <div class="topic-meta">
+                            <span>Started by: CreativeExplorer</span>
+                            <span>2 days ago</span>
+                        </div>
+                    </div>
+                    <div class="forum-topic">
+                        <div class="topic-header">
+                            <div class="topic-title">Overcoming Creative Block</div>
+                            <div class="topic-stats">
+                                <span><i class="fas fa-comment"></i> 42</span>
+                                <span><i class="fas fa-eye"></i> 289</span>
+                            </div>
+                        </div>
+                        <div class="topic-excerpt">Struggling with creative block? Share your experiences and solutions...</div>
+                        <div class="topic-meta">
+                            <span>Started by: IdeaGenerator</span>
+                            <span>5 days ago</span>
+                        </div>
+                    </div>
+                    <div class="forum-topic">
+                        <div class="topic-header">
+                            <div class="topic-title">Collaboration Projects</div>
+                            <div class="topic-stats">
+                                <span><i class="fas fa-comment"></i> 18</span>
+                                <span><i class="fas fa-eye"></i> 203</span>
+                            </div>
+                        </div>
+                        <div class="topic-excerpt">Looking for collaborators for your next creative project? Connect here...</div>
+                        <div class="topic-meta">
+                            <span>Started by: ProjectLeader</span>
+                            <span>1 week ago</span>
+                        </div>
+                    </div>
+                </div>
+                <div style="text-align: center; margin-top: 2rem;">
+                    <a href="#" class="btn-primary">Join the Community Forum</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials">
+        <div class="container">
+            <div class="section-title">
+                <h2>What Our Users Say</h2>
+                <p>Hear from our community of creative thinkers and problem solvers</p>
+            </div>
+            <div class="testimonials-slider">
+                <div class="testimonial-slide active">
+                    <div class="testimonial-content">
+                        <p>CREATIVE MINDS has completely transformed how I approach problem-solving in my business. The resources and community support have been invaluable.</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">JD</div>
+                        <div class="author-info">
+                            <h4>John Doe</h4>
+                            <p>Entrepreneur</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-slide">
+                    <div class="testimonial-content">
+                        <p>As a teacher, I've found incredible resources on CREATIVE MINDS to inspire my students. The platform makes complex concepts accessible and engaging.</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">SJ</div>
+                        <div class="author-info">
+                            <h4>Sarah Johnson</h4>
+                            <p>Educator</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-slide">
+                    <div class="testimonial-content">
+                        <p>The community aspect of CREATIVE MINDS is what sets it apart. I've connected with amazing people and collaborated on projects I never would have attempted alone.</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">MR</div>
+                        <div class="author-info">
+                            <h4>Michael Rodriguez</h4>
+                            <p>Designer</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-nav">
+                    <div class="testimonial-dot active" data-slide="0"></div>
+                    <div class="testimonial-dot" data-slide="1"></div>
+                    <div class="testimonial-dot" data-slide="2"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW FEATURE: Interactive Idea Generator -->
+    <section class="idea-generator">
+        <div class="container">
+            <div class="section-title">
+                <h2>Creative Idea Generator</h2>
+                <p>Stuck for ideas? Let our generator spark your creativity</p>
+            </div>
+            <div class="generator-container">
+                <div class="generator-output">
+                    <div class="idea-text" id="ideaText">Click the button below to generate a creative idea!</div>
+                </div>
+                <div class="generator-actions">
+                    <button class="btn-primary" id="generateIdeaBtn">Generate Idea</button>
+                    <button class="btn" id="saveIdeaBtn">Save Idea</button>
+                    <button class="btn" id="shareIdeaBtn">Share Idea</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter">
+        <div class="container">
+            <div class="newsletter-content">
+                <div class="section-title">
+                    <h2>Stay Updated</h2>
+                    <p>Subscribe to our newsletter for the latest resources and insights</p>
+                </div>
+                <form class="newsletter-form" id="newsletterForm">
+                    <input type="email" class="newsletter-input" placeholder="Enter your email" required>
+                    <button type="submit" class="newsletter-btn">Subscribe</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
     <!-- Footer -->
     <footer>
         <div class="container">
@@ -782,32 +1994,38 @@
                 <div class="footer-column">
                     <h3>CREATIVE MINDS</h3>
                     <p>Unlocking creative potential through education, inspiration, and community.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
                 </div>
                 <div class="footer-column">
                     <h3>Quick Links</h3>
                     <ul>
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#features">Features</a></li>
-                        <li><a href="#resources">Resources</a></li>
-                        <li><a href="#about">About</a></li>
+                        <li><a href="#home"><i class="fas fa-chevron-right"></i> Home</a></li>
+                        <li><a href="#features"><i class="fas fa-chevron-right"></i> Features</a></li>
+                        <li><a href="#resources"><i class="fas fa-chevron-right"></i> Resources</a></li>
+                        <li><a href="#about"><i class="fas fa-chevron-right"></i> About</a></li>
                     </ul>
                 </div>
                 <div class="footer-column">
                     <h3>Resources</h3>
                     <ul>
-                        <li><a href="#">Videos</a></li>
-                        <li><a href="#">Books</a></li>
-                        <li><a href="#">Articles</a></li>
-                        <li><a href="#">Community Forum</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Videos</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Books</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Articles</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Community Forum</a></li>
                     </ul>
                 </div>
                 <div class="footer-column">
                     <h3>Contact Us</h3>
                     <ul>
-                        <li>Email: livingstonem@202gmail.com</li>
-                        <li>Phone: +265 992467547</li>
-                        <li>Address: Malawi, Lilongwe Area 25</li>
-                        <li>ibrahim isaac</li>
+                        <li><a href="mailto:livingstonem@202gmail.com"><i class="fas fa-envelope"></i> livingstonem@202gmail.com</a></li>
+                        <li><a href="tel:+265992467547"><i class="fas fa-phone"></i> +265 992467547</a></li>
+                        <li><a href="#"><i class="fas fa-map-marker-alt"></i> Malawi, Lilongwe Area 25</a></li>
+                        <li><a href="#"><i class="fas fa-user"></i> Founder: Livingstone Mzembe</a></li>
                     </ul>
                 </div>
             </div>
@@ -824,14 +2042,17 @@
                 <h2>Login to CREATIVE MINDS</h2>
                 <button class="close-modal" id="closeLoginModal">&times;</button>
             </div>
+            <div class="success-message" id="loginSuccessMessage">Login successful! Redirecting...</div>
             <form id="loginForm">
                 <div class="form-group">
                     <label for="email">Email</label>
                     <input type="email" id="email" placeholder="Enter your email" required>
+                    <div class="error-message" id="emailError">Please enter a valid email address</div>
                 </div>
                 <div class="form-group">
                     <label for="password">Password</label>
                     <input type="password" id="password" placeholder="Enter your password" required>
+                    <div class="error-message" id="passwordError">Password must be at least 6 characters</div>
                 </div>
                 <div class="form-options">
                     <div class="remember-me">
@@ -840,7 +2061,10 @@
                     </div>
                     <a href="#" class="forgot-password">Forgot password?</a>
                 </div>
-                <button type="submit" class="btn-login-modal">Login</button>
+                <button type="submit" class="btn-login-modal" id="loginSubmitBtn">
+                    <span class="spinner" id="loginSpinner"></span>
+                    <span id="loginText">Login</span>
+                </button>
             </form>
             <div class="signup-link">
                 <p>Don't have an account? <a href="#" id="showSignup">Sign up</a></p>
@@ -855,24 +2079,32 @@
                 <h2>Join CREATIVE MINDS</h2>
                 <button class="close-modal" id="closeSignupModal">&times;</button>
             </div>
+            <div class="success-message" id="signupSuccessMessage">Account created successfully! Redirecting...</div>
             <form id="signupForm">
                 <div class="form-group">
                     <label for="fullName">Full Name</label>
                     <input type="text" id="fullName" placeholder="Enter your full name" required>
+                    <div class="error-message" id="fullNameError">Please enter your full name</div>
                 </div>
                 <div class="form-group">
                     <label for="signupEmail">Email</label>
                     <input type="email" id="signupEmail" placeholder="Enter your email" required>
+                    <div class="error-message" id="signupEmailError">Please enter a valid email address</div>
                 </div>
                 <div class="form-group">
                     <label for="signupPassword">Password</label>
                     <input type="password" id="signupPassword" placeholder="Create a password" required>
+                    <div class="error-message" id="signupPasswordError">Password must be at least 6 characters</div>
                 </div>
                 <div class="form-group">
                     <label for="confirmPassword">Confirm Password</label>
                     <input type="password" id="confirmPassword" placeholder="Confirm your password" required>
+                    <div class="error-message" id="confirmPasswordError">Passwords do not match</div>
                 </div>
-                <button type="submit" class="btn-login-modal">Create Account</button>
+                <button type="submit" class="btn-login-modal" id="signupSubmitBtn">
+                    <span class="spinner" id="signupSpinner"></span>
+                    <span id="signupText">Create Account</span>
+                </button>
             </form>
             <div class="signup-link">
                 <p>Already have an account? <a href="#" id="showLogin">Login</a></p>
@@ -880,9 +2112,365 @@
         </div>
     </div>
 
+    <!-- Scroll to top button -->
+    <button class="scroll-to-top" id="scrollToTop">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
     <script>
-        // Tab functionality
+        // Main application functionality
         document.addEventListener('DOMContentLoaded', function() {
+            // CSS Variables for dynamic theming
+            const root = document.documentElement;
+            
+            // User data storage
+            let currentUser = null;
+            
+            // Function to get initials from full name
+            function getInitials(fullName) {
+                return fullName
+                    .split(' ')
+                    .map(name => name[0])
+                    .join('')
+                    .toUpperCase();
+            }
+            
+            // Function to update user profile display
+            function updateUserProfile(user) {
+                const userName = document.getElementById('userName');
+                const userAvatar = document.getElementById('userAvatar');
+                
+                if (user) {
+                    userName.textContent = user.fullName;
+                    userAvatar.textContent = getInitials(user.fullName);
+                } else {
+                    userName.textContent = 'User';
+                    userAvatar.textContent = 'U';
+                }
+            }
+            
+            // NEW FEATURE: Interactive Stats Counter
+            const statNumbers = document.querySelectorAll('.stat-number');
+            
+            function animateStats() {
+                statNumbers.forEach(stat => {
+                    const target = parseInt(stat.getAttribute('data-target'));
+                    const suffix = stat.textContent.includes('%') ? '%' : '';
+                    let count = 0;
+                    const duration = 2000; // 2 seconds
+                    const increment = target / (duration / 16); // 60fps
+                    
+                    const updateCount = () => {
+                        count += increment;
+                        if (count < target) {
+                            stat.textContent = Math.floor(count) + suffix;
+                            setTimeout(updateCount, 16);
+                        } else {
+                            stat.textContent = target + suffix;
+                        }
+                    };
+                    
+                    updateCount();
+                });
+            }
+            
+            // Initialize stats animation when in viewport
+            const statsObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        animateStats();
+                        statsObserver.unobserve(entry.target);
+                    }
+                });
+            });
+            
+            document.querySelectorAll('.stat-item').forEach(item => {
+                statsObserver.observe(item);
+            });
+            
+            // NEW FEATURE: Interactive Progress Tracker
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+            const addProfileBtn = document.getElementById('addProfileBtn');
+            const addResourceBtn = document.getElementById('addResourceBtn');
+            const joinCommunityBtn = document.getElementById('joinCommunityBtn');
+            
+            let progress = 0;
+            const progressSteps = [
+                { text: "Complete your profile to get started (0%)", value: 0 },
+                { text: "Great! Profile completed (25%)", value: 25 },
+                { text: "Awesome! You've added your first resource (50%)", value: 50 },
+                { text: "Welcome to the community! (75%)", value: 75 },
+                { text: "You're all set! Start exploring (100%)", value: 100 }
+            ];
+            
+            function updateProgress(step) {
+                progress = progressSteps[step].value;
+                progressFill.style.width = `${progress}%`;
+                progressText.textContent = progressSteps[step].text;
+                
+                // Update button states
+                if (step >= 1) addProfileBtn.disabled = true;
+                if (step >= 2) addResourceBtn.disabled = true;
+                if (step >= 3) joinCommunityBtn.disabled = true;
+            }
+            
+            addProfileBtn.addEventListener('click', () => {
+                if (progress < 25) updateProgress(1);
+            });
+            
+            addResourceBtn.addEventListener('click', () => {
+                if (progress >= 25 && progress < 50) updateProgress(2);
+            });
+            
+            joinCommunityBtn.addEventListener('click', () => {
+                if (progress >= 50 && progress < 75) updateProgress(3);
+            });
+            
+            // Initialize progress
+            updateProgress(0);
+            
+            // NEW FEATURE: Interactive Quiz
+            const quizContent = document.getElementById('quizContent');
+            const quizResults = document.getElementById('quizResults');
+            const quizQuestion = document.getElementById('quizQuestion');
+            const quizOptions = document.getElementById('quizOptions');
+            const quizProgress = document.getElementById('quizProgress');
+            const nextQuestionBtn = document.getElementById('nextQuestion');
+            const prevQuestionBtn = document.getElementById('prevQuestion');
+            const retakeQuizBtn = document.getElementById('retakeQuiz');
+            const quizScore = document.getElementById('quizScore');
+            const quizFeedback = document.getElementById('quizFeedback');
+            
+            const quizData = [
+                {
+                    question: "What is the first step in the design thinking process?",
+                    options: ["Prototype", "Empathize", "Ideate", "Test"],
+                    correct: 1
+                },
+                {
+                    question: "Which technique is NOT typically used for brainstorming?",
+                    options: ["Mind Mapping", "SWOT Analysis", "Six Thinking Hats", "SCAMPER"],
+                    correct: 1
+                },
+                {
+                    question: "What does the 'A' in SCAMPER stand for?",
+                    options: ["Analyze", "Adapt", "Associate", "Arrange"],
+                    correct: 1
+                },
+                {
+                    question: "Which cognitive bias involves favoring the first information received?",
+                    options: ["Confirmation Bias", "Anchoring Bias", "Availability Heuristic", "Hindsight Bias"],
+                    correct: 1
+                },
+                {
+                    question: "What is the main goal of the 'Six Thinking Hats' method?",
+                    options: ["To assign roles in a team", "To explore different perspectives", "To categorize ideas", "To evaluate project risks"],
+                    correct: 1
+                }
+            ];
+            
+            let currentQuestion = 0;
+            let userAnswers = new Array(quizData.length).fill(null);
+            let quizCompleted = false;
+            
+            function loadQuestion() {
+                const question = quizData[currentQuestion];
+                quizQuestion.textContent = question.question;
+                
+                // Clear previous options
+                quizOptions.innerHTML = '';
+                
+                // Add new options
+                question.options.forEach((option, index) => {
+                    const optionElement = document.createElement('div');
+                    optionElement.className = 'quiz-option';
+                    if (userAnswers[currentQuestion] === index) {
+                        optionElement.classList.add('selected');
+                    }
+                    optionElement.textContent = option;
+                    optionElement.setAttribute('data-correct', index === question.correct);
+                    
+                    optionElement.addEventListener('click', () => {
+                        // Remove selected class from all options
+                        document.querySelectorAll('.quiz-option').forEach(opt => {
+                            opt.classList.remove('selected');
+                        });
+                        
+                        // Add selected class to clicked option
+                        optionElement.classList.add('selected');
+                        
+                        // Store user's answer
+                        userAnswers[currentQuestion] = index;
+                    });
+                    
+                    quizOptions.appendChild(optionElement);
+                });
+                
+                // Update progress bar
+                quizProgress.style.width = `${((currentQuestion + 1) / quizData.length) * 100}%`;
+                
+                // Update button states
+                prevQuestionBtn.disabled = currentQuestion === 0;
+                nextQuestionBtn.textContent = currentQuestion === quizData.length - 1 ? 'Finish Quiz' : 'Next Question';
+            }
+            
+            function showResults() {
+                let score = 0;
+                userAnswers.forEach((answer, index) => {
+                    if (answer === quizData[index].correct) {
+                        score++;
+                    }
+                });
+                
+                quizScore.textContent = `${score}/${quizData.length}`;
+                
+                // Provide feedback based on score
+                if (score === quizData.length) {
+                    quizFeedback.textContent = "Excellent! You have a strong understanding of creative thinking concepts.";
+                } else if (score >= quizData.length * 0.7) {
+                    quizFeedback.textContent = "Good job! You have a solid foundation in creative thinking.";
+                } else if (score >= quizData.length * 0.5) {
+                    quizFeedback.textContent = "Not bad! Keep learning to improve your creative thinking skills.";
+                } else {
+                    quizFeedback.textContent = "Keep exploring our resources to boost your creative thinking knowledge!";
+                }
+                
+                quizContent.style.display = 'none';
+                quizResults.style.display = 'block';
+                quizCompleted = true;
+            }
+            
+            nextQuestionBtn.addEventListener('click', () => {
+                if (userAnswers[currentQuestion] === null) {
+                    alert('Please select an answer before continuing.');
+                    return;
+                }
+                
+                if (currentQuestion < quizData.length - 1) {
+                    currentQuestion++;
+                    loadQuestion();
+                } else {
+                    showResults();
+                }
+            });
+            
+            prevQuestionBtn.addEventListener('click', () => {
+                if (currentQuestion > 0) {
+                    currentQuestion--;
+                    loadQuestion();
+                }
+            });
+            
+            retakeQuizBtn.addEventListener('click', () => {
+                currentQuestion = 0;
+                userAnswers.fill(null);
+                quizCompleted = false;
+                quizContent.style.display = 'block';
+                quizResults.style.display = 'none';
+                loadQuestion();
+            });
+            
+            // Initialize quiz
+            loadQuestion();
+            
+            // NEW FEATURE: Interactive Idea Generator
+            const ideaText = document.getElementById('ideaText');
+            const generateIdeaBtn = document.getElementById('generateIdeaBtn');
+            const saveIdeaBtn = document.getElementById('saveIdeaBtn');
+            const shareIdeaBtn = document.getElementById('shareIdeaBtn');
+            
+            const ideas = [
+                "Create a mobile app that helps people track their daily water intake with fun challenges",
+                "Design a sustainable packaging solution for local farmers to reduce food waste",
+                "Develop a community garden project that connects neighbors and promotes urban agriculture",
+                "Write a short story from the perspective of an inanimate object in your home",
+                "Design a board game that teaches players about renewable energy sources",
+                "Create a series of illustrations that visualize complex scientific concepts",
+                "Develop a workshop that teaches coding basics through art and creativity",
+                "Design a public art installation that raises awareness about environmental issues",
+                "Create a podcast series interviewing creative professionals about their process",
+                "Develop a mindfulness app specifically designed for creative professionals"
+            ];
+            
+            let currentIdea = '';
+            
+            generateIdeaBtn.addEventListener('click', () => {
+                // Add loading animation
+                ideaText.style.opacity = '0.5';
+                
+                setTimeout(() => {
+                    const randomIndex = Math.floor(Math.random() * ideas.length);
+                    currentIdea = ideas[randomIndex];
+                    ideaText.textContent = currentIdea;
+                    ideaText.style.opacity = '1';
+                    
+                    // Enable save and share buttons
+                    saveIdeaBtn.disabled = false;
+                    shareIdeaBtn.disabled = false;
+                }, 500);
+            });
+            
+            saveIdeaBtn.addEventListener('click', () => {
+                if (currentIdea) {
+                    // In a real app, this would save to a database
+                    alert(`Idea saved: "${currentIdea}"`);
+                }
+            });
+            
+            shareIdeaBtn.addEventListener('click', () => {
+                if (currentIdea) {
+                    // In a real app, this would open a share dialog
+                    alert(`Share this idea: "${currentIdea}"`);
+                }
+            });
+            
+            // Initialize buttons
+            saveIdeaBtn.disabled = true;
+            shareIdeaBtn.disabled = true;
+            
+            // Mobile menu functionality
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const mobileNav = document.getElementById('mobileNav');
+            const closeMobileMenu = document.getElementById('closeMobileMenu');
+            const overlay = document.getElementById('overlay');
+            const mobileLoginBtn = document.getElementById('mobileLoginBtn');
+            const mobileSignupBtn = document.getElementById('mobileSignupBtn');
+            
+            function openMobileMenu() {
+                mobileNav.classList.add('active');
+                overlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+            
+            function closeMobileMenuFunc() {
+                mobileNav.classList.remove('active');
+                overlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+            
+            mobileMenuBtn.addEventListener('click', openMobileMenu);
+            closeMobileMenu.addEventListener('click', closeMobileMenuFunc);
+            overlay.addEventListener('click', closeMobileMenuFunc);
+            
+            // Mobile auth buttons
+            mobileLoginBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                closeMobileMenuFunc();
+                setTimeout(() => {
+                    loginModal.style.display = 'flex';
+                }, 300);
+            });
+            
+            mobileSignupBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                closeMobileMenuFunc();
+                setTimeout(() => {
+                    signupModal.style.display = 'flex';
+                }, 300);
+            });
+            
+            // Tab functionality
             const tabBtns = document.querySelectorAll('.tab-btn');
             const tabContents = document.querySelectorAll('.tab-content');
             
@@ -901,6 +2489,34 @@
                 });
             });
             
+            // Testimonials slider
+            const testimonialSlides = document.querySelectorAll('.testimonial-slide');
+            const testimonialDots = document.querySelectorAll('.testimonial-dot');
+            let currentSlide = 0;
+            
+            function showSlide(n) {
+                testimonialSlides.forEach(slide => slide.classList.remove('active'));
+                testimonialDots.forEach(dot => dot.classList.remove('active'));
+                
+                currentSlide = n;
+                if (currentSlide >= testimonialSlides.length) currentSlide = 0;
+                if (currentSlide < 0) currentSlide = testimonialSlides.length - 1;
+                
+                testimonialSlides[currentSlide].classList.add('active');
+                testimonialDots[currentSlide].classList.add('active');
+            }
+            
+            testimonialDots.forEach((dot, index) => {
+                dot.addEventListener('click', () => {
+                    showSlide(index);
+                });
+            });
+            
+            // Auto advance slides
+            setInterval(() => {
+                showSlide(currentSlide + 1);
+            }, 5000);
+            
             // Login/Logout functionality
             const loginBtn = document.getElementById('loginBtn');
             const signupBtn = document.getElementById('signupBtn');
@@ -915,6 +2531,33 @@
             const userProfile = document.getElementById('userProfile');
             const loginForm = document.getElementById('loginForm');
             const signupForm = document.getElementById('signupForm');
+            const loginSubmitBtn = document.getElementById('loginSubmitBtn');
+            const signupSubmitBtn = document.getElementById('signupSubmitBtn');
+            const loginSpinner = document.getElementById('loginSpinner');
+            const signupSpinner = document.getElementById('signupSpinner');
+            const loginText = document.getElementById('loginText');
+            const signupText = document.getElementById('signupText');
+            const loginSuccessMessage = document.getElementById('loginSuccessMessage');
+            const signupSuccessMessage = document.getElementById('signupSuccessMessage');
+            
+            // Form validation functions
+            function validateEmail(email) {
+                const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return re.test(email);
+            }
+            
+            function validatePassword(password) {
+                return password.length >= 6;
+            }
+            
+            function showError(inputId, errorId, message) {
+                document.getElementById(inputId).parentElement.classList.add('error');
+                document.getElementById(errorId).textContent = message;
+            }
+            
+            function clearError(inputId) {
+                document.getElementById(inputId).parentElement.classList.remove('error');
+            }
             
             // Show login modal
             loginBtn.addEventListener('click', () => {
@@ -929,10 +2572,12 @@
             // Close modals
             closeLoginModal.addEventListener('click', () => {
                 loginModal.style.display = 'none';
+                resetForms();
             });
             
             closeSignupModal.addEventListener('click', () => {
                 signupModal.style.display = 'none';
+                resetForms();
             });
             
             // Switch between login and signup modals
@@ -940,49 +2585,318 @@
                 e.preventDefault();
                 loginModal.style.display = 'none';
                 signupModal.style.display = 'flex';
+                resetForms();
             });
             
             showLogin.addEventListener('click', (e) => {
                 e.preventDefault();
                 signupModal.style.display = 'none';
                 loginModal.style.display = 'flex';
+                resetForms();
             });
             
-            // Login form submission
+            // Login form validation and submission
             loginForm.addEventListener('submit', (e) => {
                 e.preventDefault();
-                // In a real application, you would validate credentials with a server
-                // For this demo, we'll just simulate a successful login
-                authButtons.style.display = 'none';
-                userProfile.style.display = 'flex';
-                loginModal.style.display = 'none';
+                
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                let isValid = true;
+                
+                // Validate email
+                if (!validateEmail(email)) {
+                    showError('email', 'emailError', 'Please enter a valid email address');
+                    isValid = false;
+                } else {
+                    clearError('email');
+                }
+                
+                // Validate password
+                if (!validatePassword(password)) {
+                    showError('password', 'passwordError', 'Password must be at least 6 characters');
+                    isValid = false;
+                } else {
+                    clearError('password');
+                }
+                
+                if (isValid) {
+                    // Show loading state
+                    loginSpinner.style.display = 'inline-block';
+                    loginText.textContent = 'Logging in...';
+                    loginSubmitBtn.disabled = true;
+                    
+                    // Simulate API call
+                    setTimeout(() => {
+                        // In a real application, you would validate credentials with a server
+                        // For this demo, we'll just simulate a successful login
+                        loginSpinner.style.display = 'none';
+                        loginText.textContent = 'Login';
+                        loginSubmitBtn.disabled = false;
+                        
+                        loginSuccessMessage.style.display = 'block';
+                        
+                        // Set current user (in a real app, this would come from the server)
+                        currentUser = {
+                            fullName: "John Doe", // This would be fetched from the server
+                            email: email
+                        };
+                        
+                        setTimeout(() => {
+                            authButtons.style.display = 'none';
+                            userProfile.style.display = 'flex';
+                            loginModal.style.display = 'none';
+                            loginSuccessMessage.style.display = 'none';
+                            resetForms();
+                            
+                            // Update user profile with actual user data
+                            updateUserProfile(currentUser);
+                            
+                            // Update mobile menu
+                            document.querySelectorAll('.mobile-nav a').forEach(link => {
+                                if (link.textContent === 'Login' || link.textContent === 'Sign Up') {
+                                    link.style.display = 'none';
+                                }
+                            });
+                        }, 1500);
+                    }, 2000);
+                }
             });
             
-            // Signup form submission
+            // Signup form validation and submission
             signupForm.addEventListener('submit', (e) => {
                 e.preventDefault();
-                // In a real application, you would send this data to a server
-                // For this demo, we'll just simulate a successful signup and login
-                authButtons.style.display = 'none';
-                userProfile.style.display = 'flex';
-                signupModal.style.display = 'none';
+                
+                const fullName = document.getElementById('fullName').value;
+                const signupEmail = document.getElementById('signupEmail').value;
+                const signupPassword = document.getElementById('signupPassword').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+                let isValid = true;
+                
+                // Validate full name
+                if (fullName.trim() === '') {
+                    showError('fullName', 'fullNameError', 'Please enter your full name');
+                    isValid = false;
+                } else {
+                    clearError('fullName');
+                }
+                
+                // Validate email
+                if (!validateEmail(signupEmail)) {
+                    showError('signupEmail', 'signupEmailError', 'Please enter a valid email address');
+                    isValid = false;
+                } else {
+                    clearError('signupEmail');
+                }
+                
+                // Validate password
+                if (!validatePassword(signupPassword)) {
+                    showError('signupPassword', 'signupPasswordError', 'Password must be at least 6 characters');
+                    isValid = false;
+                } else {
+                    clearError('signupPassword');
+                }
+                
+                // Validate password confirmation
+                if (signupPassword !== confirmPassword) {
+                    showError('confirmPassword', 'confirmPasswordError', 'Passwords do not match');
+                    isValid = false;
+                } else {
+                    clearError('confirmPassword');
+                }
+                
+                if (isValid) {
+                    // Show loading state
+                    signupSpinner.style.display = 'inline-block';
+                    signupText.textContent = 'Creating Account...';
+                    signupSubmitBtn.disabled = true;
+                    
+                    // Simulate API call
+                    setTimeout(() => {
+                        // In a real application, you would send this data to a server
+                        // For this demo, we'll just simulate a successful signup and login
+                        signupSpinner.style.display = 'none';
+                        signupText.textContent = 'Create Account';
+                        signupSubmitBtn.disabled = false;
+                        
+                        signupSuccessMessage.style.display = 'block';
+                        
+                        // Set current user with the actual name from the form
+                        currentUser = {
+                            fullName: fullName,
+                            email: signupEmail
+                        };
+                        
+                        setTimeout(() => {
+                            authButtons.style.display = 'none';
+                            userProfile.style.display = 'flex';
+                            signupModal.style.display = 'none';
+                            signupSuccessMessage.style.display = 'none';
+                            resetForms();
+                            
+                            // Update user profile with actual user data
+                            updateUserProfile(currentUser);
+                            
+                            // Update mobile menu
+                            document.querySelectorAll('.mobile-nav a').forEach(link => {
+                                if (link.textContent === 'Login' || link.textContent === 'Sign Up') {
+                                    link.style.display = 'none';
+                                }
+                            });
+                        }, 1500);
+                    }, 2000);
+                }
             });
             
             // Logout functionality
             logoutBtn.addEventListener('click', () => {
                 authButtons.style.display = 'flex';
                 userProfile.style.display = 'none';
+                currentUser = null;
+                
+                // Reset user profile display
+                updateUserProfile(null);
+                
+                // Update mobile menu
+                document.querySelectorAll('.mobile-nav a').forEach(link => {
+                    if (link.textContent === 'Login' || link.textContent === 'Sign Up') {
+                        link.style.display = 'block';
+                    }
+                });
+                
+                // Show logout message
+                alert('You have been logged out successfully.');
             });
+            
+            // Reset form function
+            function resetForms() {
+                loginForm.reset();
+                signupForm.reset();
+                
+                document.querySelectorAll('.form-group').forEach(group => {
+                    group.classList.remove('error');
+                });
+                
+                document.querySelectorAll('.success-message').forEach(message => {
+                    message.style.display = 'none';
+                });
+                
+                loginSpinner.style.display = 'none';
+                signupSpinner.style.display = 'none';
+                loginText.textContent = 'Login';
+                signupText.textContent = 'Create Account';
+                loginSubmitBtn.disabled = false;
+                signupSubmitBtn.disabled = false;
+            }
             
             // Close modals when clicking outside
             window.addEventListener('click', (e) => {
                 if (e.target === loginModal) {
                     loginModal.style.display = 'none';
+                    resetForms();
                 }
                 if (e.target === signupModal) {
                     signupModal.style.display = 'none';
+                    resetForms();
                 }
             });
+            
+            // Newsletter form submission
+            const newsletterForm = document.getElementById('newsletterForm');
+            newsletterForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const email = newsletterForm.querySelector('input').value;
+                
+                if (validateEmail(email)) {
+                    // Show success message
+                    alert('Thank you for subscribing to our newsletter!');
+                    newsletterForm.reset();
+                } else {
+                    alert('Please enter a valid email address.');
+                }
+            });
+            
+            // Scroll to top functionality
+            const scrollToTopBtn = document.getElementById('scrollToTop');
+            
+            window.addEventListener('scroll', () => {
+                if (window.pageYOffset > 300) {
+                    scrollToTopBtn.style.display = 'flex';
+                } else {
+                    scrollToTopBtn.style.display = 'none';
+                }
+                
+                // Header scroll effect
+                if (window.scrollY > 100) {
+                    document.getElementById('header').classList.add('header-scrolled');
+                } else {
+                    document.getElementById('header').classList.remove('header-scrolled');
+                }
+            });
+            
+            scrollToTopBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+            
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        // Update active nav link
+                        document.querySelectorAll('nav a').forEach(link => {
+                            link.classList.remove('active');
+                        });
+                        this.classList.add('active');
+                        
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                        
+                        // Close mobile menu if open
+                        closeMobileMenuFunc();
+                    }
+                });
+            });
+            
+            // Initialize the page
+            function init() {
+                // Set current year in copyright
+                document.querySelector('.copyright p').innerHTML = `&copy; ${new Date().getFullYear()} CREATIVE MINDS. Founded by Livingstone Mzembe. All rights reserved.`;
+                
+                // Add loading animation to elements
+                const observerOptions = {
+                    threshold: 0.1,
+                    rootMargin: '0px 0px -50px 0px'
+                };
+                
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.style.opacity = '1';
+                            entry.target.style.transform = 'translateY(0)';
+                        }
+                    });
+                }, observerOptions);
+                
+                document.querySelectorAll('.feature-card, .resource-card, .about-content, .path-item, .forum-topic').forEach(el => {
+                    el.style.opacity = '0';
+                    el.style.transform = 'translateY(20px)';
+                    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                    observer.observe(el);
+                });
+            }
+            
+            // Initialize the application
+            init();
         });
     </script>
 </body>
