@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CREATIVE MINDS - Unlock Your Potential</title>
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo h1 {
+            font-size: 1.8rem;
+            margin-left: 10px;
+        }
+        
+        .logo-icon {
+            font-size: 2rem;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: #f1c40f;
+        }
+        
+        .auth-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .btn-login {
+            background-color: transparent;
+            border: 1px solid white;
+            color: white;
+        }
+        
+        .btn-login:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .btn-signup {
+            background-color: #f1c40f;
+            color: #2c3e50;
+        }
+        
+        .btn-signup:hover {
+            background-color: #f39c12;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(44, 62, 80, 0.8), rgba(52, 152, 219, 0.8)), url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 5rem 0;
+            text-align: center;
+        }
+        
+        .hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+        
+        .btn-primary {
+            background-color: #f1c40f;
+            color: #2c3e50;
+            padding: 12px 24px;
+            font-size: 1.1rem;
+            border-radius: 30px;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary:hover {
+            background-color: #f39c12;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Features Section */
+        .features {
+            padding: 5rem 0;
+            background-color: white;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .section-title h2 {
+            font-size: 2.2rem;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }
+        
+        .section-title p {
+            color: #7f8c8d;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .feature-card {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            color: #3498db;
+            margin-bottom: 1.5rem;
+        }
+        
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+        }
+        
+        /* Resources Section */
+        .resources {
+            padding: 5rem 0;
+            background-color: #f5f7fa;
+        }
+        
+        .resources-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+        
+        .tab-btn {
+            background-color: #e0e6ed;
+            border: none;
+            padding: 12px 24px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .tab-btn.active {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .tab-btn:first-child {
+            border-radius: 30px 0 0 30px;
+        }
+        
+        .tab-btn:last-child {
+            border-radius: 0 30px 30px 0;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .resource-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+        }
+        
+        .resource-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .resource-img {
+            height: 160px;
+            background-color: #3498db;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+        }
+        
+        .resource-content {
+            padding: 1.5rem;
+        }
+        
+        .resource-content h3 {
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+        }
+        
+        .resource-content p {
+            color: #7f8c8d;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+        
+        .resource-link {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .resource-link i {
+            margin-left: 5px;
+        }
+        
+        /* About Section */
+        .about {
+            padding: 5rem 0;
+            background-color: white;
+        }
+        
+        .about-content {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+        }
+        
+        .about-img {
+            flex: 1;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .about-img img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .about-text {
+            flex: 1;
+        }
+        
+        .about-text h2 {
+            font-size: 2.2rem;
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+        }
+        
+        .about-text p {
+            margin-bottom: 1.5rem;
+            color: #555;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            padding: 3rem 0 1rem;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 40px;
+            height: 2px;
+            background-color: #3498db;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .footer-column ul li a {
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-column ul li a:hover {
+            color: #3498db;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #34495e;
+            color: #bdc3c7;
+            font-size: 0.9rem;
+        }
+        
+        /* Login Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 400px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .modal-header h2 {
+            color: #2c3e50;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #7f8c8d;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .remember-me {
+            display: flex;
+            align-items: center;
+        }
+        
+        .remember-me input {
+            margin-right: 5px;
+        }
+        
+        .forgot-password {
+            color: #3498db;
+            text-decoration: none;
+        }
+        
+        .btn-login-modal {
+            background-color: #3498db;
+            color: white;
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-login-modal:hover {
+            background-color: #2980b9;
+        }
+        
+        .signup-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: #7f8c8d;
+        }
+        
+        .signup-link a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        /* User Profile */
+        .user-profile {
+            display: none;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #3498db;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .user-name {
+            font-weight: 500;
+        }
+        
+        .btn-logout {
+            background-color: transparent;
+            border: 1px solid white;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            nav ul {
+                margin: 1rem 0;
+                justify-content: center;
+            }
+            
+            .about-content {
+                flex-direction: column;
+            }
+            
+            .hero h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">💡</div>
+                    <h1>CREATIVE MINDS</h1>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#resources">Resources</a></li>
+                        <li><a href="#about">About</a></li>
+                    </ul>
+                </nav>
+                <div class="auth-buttons" id="authButtons">
+                    <button class="btn btn-login" id="loginBtn">Login</button>
+                    <button class="btn btn-signup" id="signupBtn">Sign Up</button>
+                </div>
+                <div class="user-profile" id="userProfile">
+                    <div class="user-avatar">LM</div>
+                    <div class="user-name">Livingstone Mzembe</div>
+                    <button class="btn-logout" id="logoutBtn">Logout</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <h2>Unlock Your Creative Potential</h2>
+            <p>CREATIVE MINDS is your platform for innovative ideas, educational resources, and problem-solving inspiration. Join our community to expand your knowledge and creativity.</p>
+            <a href="#resources" class="btn-primary">Explore Resources</a>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-title">
+                <h2>How CREATIVE MINDS Helps You</h2>
+                <p>Our platform provides multiple ways to stimulate your creativity and expand your knowledge</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">💡</div>
+                    <h3>Problem Solving</h3>
+                    <p>Get innovative ideas and solutions for the challenges you're facing in your personal or professional life.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📚</div>
+                    <h3>Educational Resources</h3>
+                    <p>Access a vast library of books, articles, and tutorials to expand your knowledge in various fields.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎬</div>
+                    <h3>Video Content</h3>
+                    <p>Watch educational videos, tutorials, and inspirational talks from experts around the world.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">👥</div>
+                    <h3>Community</h3>
+                    <p>Connect with like-minded individuals, share ideas, and collaborate on creative projects.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Resources Section -->
+    <section class="resources" id="resources">
+        <div class="container">
+            <div class="section-title">
+                <h2>Explore Our Resources</h2>
+                <p>Browse through our curated collection of educational materials</p>
+            </div>
+            <div class="resources-tabs">
+                <button class="tab-btn active" data-tab="videos">Videos</button>
+                <button class="tab-btn" data-tab="books">Books</button>
+                <button class="tab-btn" data-tab="articles">Articles</button>
+            </div>
+            <div class="tab-content active" id="videos-tab">
+                <div class="resources-grid">
+                    <div class="resource-card">
+                        <div class="resource-img">🎬</div>
+                        <div class="resource-content">
+                            <h3>Creative Problem Solving</h3>
+                            <p>Learn techniques to approach problems from new perspectives and generate innovative solutions.</p>
+                            <a href="#" class="resource-link">Watch Now <i>→</i></a>
+                        </div>
+                    </div>
+                    <div class="resource-card">
+                        <div class="resource-img">🎬</div>
+                        <div class="resource-content">
+                            <h3>Design Thinking Fundamentals</h3>
+                            <p>Understand the principles of design thinking and how to apply them to real-world challenges.</p>
+                            <a href="#" class="resource-link">Watch Now <i>→</i></a>
+                        </div>
+                    </div>
+                    <div class="resource-card">
+                        <div class="resource-img">🎬</div>
+                        <div class="resource-content">
+                            <h3>Innovation in Business</h3>
+                            <p>Explore how businesses can foster innovation and stay ahead in competitive markets.</p>
+                            <a href="#" class="resource-link">Watch Now <i>→</i></a>
+                        </div>
+                    </div>
+                    <div class="resource-card">
+                        <div class="resource-img">🎬</div>
+                        <div class="resource-content">
+                            <h3>Mindfulness for Creativity</h3>
+                            <p>Discover how mindfulness practices can enhance your creative thinking and problem-solving abilities.</p>
+                            <a href="#" class="resource-link">Watch Now <i>→</i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-content" id="books-tab">
+                <div class="resources-grid">
+                    <div class="resource-card">
+                        <div class="resource-img">📚</div>
+                        <div class="resource-content">
+                            <h3>Creative Confidence</h3>
+                            <p>By Tom and David Kelley - Unlock your creative potential and overcome the fears that hold you back.</p>
+                            <a href="#" class="resource-link">Read Now <i>→</i></a>
+                        </div>
+                    </div>
+                    <div class="resource-card">
+                        <div class="resource-img">📚</div>
+                        <div class="resource-content">
+                            <h3>Thinking, Fast and Slow</h3>
+                            <p>By Daniel Kahneman - Explore the two systems that drive the way we think and make decisions.</p>
+                            <a href="#" class="resource-link">Read Now <i>→</i></a>
+                        </div>
+                    </div>
+                    <div class="resource-card">
+                        <div class="resource-img">📚</div>
+                        <div class="resource-content">
+                            <h3>The Innovator's Dilemma</h3>
+                            <p>By Clayton Christensen - Understand why great companies can fail and how to avoid it.</p>
+                            <a href="#" class="resource-link">Read Now <i>→</i></a>
+                        </div>
+                    </div>
+                    <div class="resource-card">
+                        <div class="resource-img">📚</div>
+                        <div class="resource-content">
+                            <h3>Steal Like an Artist</h3>
+                            <p>By Austin Kleon - Discover how to embrace influence and build upon the work of others creatively.</p>
+                            <a href="#" class="resource-link">Read Now <i>→</i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-content" id="articles-tab">
+                <div class="resources-grid">
+                    <div class="resource-card">
+                        <div class="resource-img">📄</div>
+                        <div class="resource-content">
+                            <h3>The Psychology of Creativity</h3>
+                            <p>Explore the cognitive processes behind creative thinking and how to enhance your creative abilities.</p>
+                            <a href="#" class="resource-link">Read Now <i>→</i></a>
+                        </div>
+                    </div>
+                    <div class="resource-card">
+                        <div class="resource-img">📄</div>
+                        <div class="resource-content">
+                            <h3>10 Techniques for Better Problem Solving</h3>
+                            <p>Practical methods to approach complex problems and generate effective solutions.</p>
+                            <a href="#" class="resource-link">Read Now <i>→</i></a>
+                        </div>
+                    </div>
+                    <div class="resource-card">
+                        <div class="resource-img">📄</div>
+                        <div class="resource-content">
+                            <h3>How to Foster Innovation in Teams</h3>
+                            <p>Strategies for creating an environment where creativity and innovation can thrive in group settings.</p>
+                            <a href="#" class="resource-link">Read Now <i>→</i></a>
+                        </div>
+                    </div>
+                    <div class="resource-card">
+                        <div class="resource-img">📄</div>
+                        <div class="resource-content">
+                            <h3>The Future of Education</h3>
+                            <p>How technology and new pedagogical approaches are transforming learning experiences.</p>
+                            <a href="#" class="resource-link">Read Now <i>→</i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-img">
+                    <!-- Placeholder for image -->
+                    <div style="background-color: #3498db; height: 400px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem;">
+                        Livingstone Mzembe - Founder
+                    </div>
+                </div>
+                <div class="about-text">
+                    <h2>About CREATIVE MINDS</h2>
+                    <p>CREATIVE MINDS was founded by Livingstone Mzembe with a vision to create a platform where individuals can access resources to enhance their creativity, problem-solving skills, and knowledge.</p>
+                    <p>Our mission is to democratize access to quality educational content and foster a community of lifelong learners and innovators.</p>
+                    <p>Whether you're a student, professional, or simply someone looking to expand your horizons, CREATIVE MINDS offers the tools and resources you need to unlock your full potential.</p>
+                    <a href="#" class="btn-primary">Learn More About Our Mission</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>CREATIVE MINDS</h3>
+                    <p>Unlocking creative potential through education, inspiration, and community.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#resources">Resources</a></li>
+                        <li><a href="#about">About</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><a href="#">Videos</a></li>
+                        <li><a href="#">Books</a></li>
+                        <li><a href="#">Articles</a></li>
+                        <li><a href="#">Community Forum</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact Us</h3>
+                    <ul>
+                        <li>Email: livingstonem@202gmail.com</li>
+                        <li>Phone: +265 992467547</li>
+                        <li>Address: Malawi, Lilongwe Area 25</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 CREATIVE MINDS. Founded by Livingstone Mzembe. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Login to CREATIVE MINDS</h2>
+                <button class="close-modal" id="closeLoginModal">&times;</button>
+            </div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter your password" required>
+                </div>
+                <div class="form-options">
+                    <div class="remember-me">
+                        <input type="checkbox" id="remember">
+                        <label for="remember">Remember me</label>
+                    </div>
+                    <a href="#" class="forgot-password">Forgot password?</a>
+                </div>
+                <button type="submit" class="btn-login-modal">Login</button>
+            </form>
+            <div class="signup-link">
+                <p>Don't have an account? <a href="#" id="showSignup">Sign up</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div class="modal" id="signupModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Join CREATIVE MINDS</h2>
+                <button class="close-modal" id="closeSignupModal">&times;</button>
+            </div>
+            <form id="signupForm">
+                <div class="form-group">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" id="fullName" placeholder="Enter your full name" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupEmail">Email</label>
+                    <input type="email" id="signupEmail" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupPassword">Password</label>
+                    <input type="password" id="signupPassword" placeholder="Create a password" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" placeholder="Confirm your password" required>
+                </div>
+                <button type="submit" class="btn-login-modal">Create Account</button>
+            </form>
+            <div class="signup-link">
+                <p>Already have an account? <a href="#" id="showLogin">Login</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Remove active class from all buttons and contents
+                    tabBtns.forEach(b => b.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+                    
+                    // Add active class to clicked button
+                    btn.classList.add('active');
+                    
+                    // Show corresponding content
+                    const tabId = btn.getAttribute('data-tab') + '-tab';
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+            
+            // Login/Logout functionality
+            const loginBtn = document.getElementById('loginBtn');
+            const signupBtn = document.getElementById('signupBtn');
+            const logoutBtn = document.getElementById('logoutBtn');
+            const loginModal = document.getElementById('loginModal');
+            const signupModal = document.getElementById('signupModal');
+            const closeLoginModal = document.getElementById('closeLoginModal');
+            const closeSignupModal = document.getElementById('closeSignupModal');
+            const showSignup = document.getElementById('showSignup');
+            const showLogin = document.getElementById('showLogin');
+            const authButtons = document.getElementById('authButtons');
+            const userProfile = document.getElementById('userProfile');
+            const loginForm = document.getElementById('loginForm');
+            const signupForm = document.getElementById('signupForm');
+            
+            // Show login modal
+            loginBtn.addEventListener('click', () => {
+                loginModal.style.display = 'flex';
+            });
+            
+            // Show signup modal
+            signupBtn.addEventListener('click', () => {
+                signupModal.style.display = 'flex';
+            });
+            
+            // Close modals
+            closeLoginModal.addEventListener('click', () => {
+                loginModal.style.display = 'none';
+            });
+            
+            closeSignupModal.addEventListener('click', () => {
+                signupModal.style.display = 'none';
+            });
+            
+            // Switch between login and signup modals
+            showSignup.addEventListener('click', (e) => {
+                e.preventDefault();
+                loginModal.style.display = 'none';
+                signupModal.style.display = 'flex';
+            });
+            
+            showLogin.addEventListener('click', (e) => {
+                e.preventDefault();
+                signupModal.style.display = 'none';
+                loginModal.style.display = 'flex';
+            });
+            
+            // Login form submission
+            loginForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                // In a real application, you would validate credentials with a server
+                // For this demo, we'll just simulate a successful login
+                authButtons.style.display = 'none';
+                userProfile.style.display = 'flex';
+                loginModal.style.display = 'none';
+            });
+            
+            // Signup form submission
+            signupForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                // In a real application, you would send this data to a server
+                // For this demo, we'll just simulate a successful signup and login
+                authButtons.style.display = 'none';
+                userProfile.style.display = 'flex';
+                signupModal.style.display = 'none';
+            });
+            
+            // Logout functionality
+            logoutBtn.addEventListener('click', () => {
+                authButtons.style.display = 'flex';
+                userProfile.style.display = 'none';
+            });
+            
+            // Close modals when clicking outside
+            window.addEventListener('click', (e) => {
+                if (e.target === loginModal) {
+                    loginModal.style.display = 'none';
+                }
+                if (e.target === signupModal) {
+                    signupModal.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
